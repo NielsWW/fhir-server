@@ -67,7 +67,7 @@ RUN dotnet restore ./src/Microsoft.Health.Fhir.${FHIR_VERSION}.Web/Microsoft.Hea
 
 COPY . .
 
-RUN dotnet publish /repo/src/Microsoft.Health.Fhir.${FHIR_VERSION}.Web/Microsoft.Health.Fhir.${FHIR_VERSION}.Web.csproj -c Release -o "/build" --no-restore -p:AssemblyVersion="${ASSEMBLY_VER}" -p:FileVersion="${ASSEMBLY_VER}"  -p:Version="${ASSEMBLY_VER}" -f net8.0
+RUN dotnet publish /repo/src/Microsoft.Health.Fhir.${FHIR_VERSION}.Web/Microsoft.Health.Fhir.${FHIR_VERSION}.Web.csproj -c Release -o "/build" --no-restore -f net8.0
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0.0-cbl-mariner2.0 AS runtime
 
@@ -84,7 +84,7 @@ COPY --from=build /etc/group /etc/group
 COPY --from=build /etc/passwd /etc/passwd
 
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
-    ASPNETCORE_URLS=http://+:8080
+    ASPNETCORE_URLS=http://+:8085
 
 WORKDIR /app
 COPY --from=build /build .
